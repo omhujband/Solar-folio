@@ -8,6 +8,8 @@ export default function UnexploredPage({
   planetRadius = 2,
   hasRings = false,
   tilt = 0,
+  texture,
+  ringTexture,
   uniqueLine,
 }) {
   const navigate = useNavigate()
@@ -20,6 +22,8 @@ export default function UnexploredPage({
       planetRadius={planetRadius}
       hasRings={hasRings}
       tilt={tilt}
+      texture={texture}
+      ringTexture={ringTexture}
     >
       <div className="space-y-12">
         {/* Core message - EXACT TEXT REQUIRED */}

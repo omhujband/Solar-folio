@@ -8,11 +8,10 @@ export default function SaturnPage() {
       planetColor="#f4d59e"
       planetRadius={2}
       hasRings={true}
+      texture="/textures/2k_saturn.jpg"
+      ringTexture="/textures/2k_saturn_ring_alpha.png"
       uniqueLine="Even the grandest rings are made of countless small pieces, 
         orbiting patiently — proof that beauty emerges from fragments given time."
-      texture="/textures/2k_saturn.jpg" 
-      ringTexture="/textures/2k_saturn_ring_alpha.png"
-
     />
   )
 }

@@ -8,9 +8,9 @@ export default function UranusPage() {
       planetColor="#7de3f4"
       planetRadius={1.8}
       tilt={Math.PI * 0.5}
+      texture="/textures/2k_uranus.jpg"
       uniqueLine="Sometimes the most profound perspectives come from tilting 
         your axis — seeing the universe from an angle no one else considered."
-      texture="/textures/2k_uranus.jpg"
     />
   )
 }

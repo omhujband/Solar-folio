@@ -38,7 +38,7 @@ export default function PauseButton({ isPaused, onToggle }) {
             {isPaused ? 'Resume' : 'Pause'}
           </p>
           <p className="text-stardust/60 text-xs">
-            {isPaused ? 'Continue orbits' : 'Freeze to click'}
+            {isPaused ? 'Continue orbits' : 'Click to Freeze'}
           </p>
         </div>
       </div>

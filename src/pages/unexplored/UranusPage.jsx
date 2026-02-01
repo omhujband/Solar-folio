@@ -1,5 +1,6 @@
 import React from 'react'
 import UnexploredPage from '../../components/sections/UnexploredPage'
+import UnexploredContent from '../../components/content/UnexploredContent'
 
 export default function UranusPage() {
   return (
@@ -9,8 +10,8 @@ export default function UranusPage() {
       planetRadius={1.8}
       tilt={Math.PI * 0.5}
       texture="/textures/2k_uranus.jpg"
-      uniqueLine="Sometimes the most profound perspectives come from tilting 
-        your axis — seeing the universe from an angle no one else considered."
-    />
+    >
+      <UnexploredContent uniqueLine="Sometimes the most profound perspectives come from tilting your axis — seeing the universe from an angle no one else considered." />
+    </UnexploredPage>
   )
 }

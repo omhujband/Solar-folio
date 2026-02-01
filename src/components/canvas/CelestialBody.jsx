@@ -29,9 +29,9 @@ export default function CelestialBody({
 
   // Load textures conditionally
   const textures = useTexture(
-    texture && ringTexture 
+    texture && ringTexture
       ? { map: texture, ringMap: ringTexture }
-      : texture 
+      : texture
         ? { map: texture }
         : ringTexture
           ? { ringMap: ringTexture }
@@ -41,10 +41,10 @@ export default function CelestialBody({
   const planetTexture = textures.map
   const ringTextureMap = textures.ringMap
 
-  // Calculate initial position
+  // Initial orbit angle
   const angle = useRef(initialAngle)
 
-  // Planet material with texture support
+  // Planet material
   const material = useMemo(() => {
     const baseConfig = {
       roughness: 0.8,
@@ -54,10 +54,11 @@ export default function CelestialBody({
     }
 
     if (planetTexture) {
+      planetTexture.colorSpace = THREE.SRGBColorSpace
       return new THREE.MeshStandardMaterial({
         ...baseConfig,
         map: planetTexture,
-        emissiveIntensity: isUnexplored ? 0.02 : 0.05,
+        emissiveIntensity: isUnexplored ? 0.02 : 0.12,
       })
     }
 
@@ -67,29 +68,53 @@ export default function CelestialBody({
     })
   }, [planetTexture, color, isUnexplored])
 
-  // Ring material (for Saturn)
+  // Ring geometry with corrected UVs (CRITICAL)
+  const ringGeometry = useMemo(() => {
+    if (!hasRings) return null
+
+    const innerRadius = radius * 1.4
+    const outerRadius = radius * 2.2
+    const geo = new THREE.RingGeometry(innerRadius, outerRadius, 128)
+
+    const pos = geo.attributes.position
+    const uv = geo.attributes.uv
+    const v = new THREE.Vector3()
+
+    for (let i = 0; i < pos.count; i++) {
+      v.fromBufferAttribute(pos, i)
+      const r = v.length()
+      uv.setXY(i, (r - innerRadius) / (outerRadius - innerRadius), 1)
+    }
+
+    return geo
+  }, [hasRings, radius])
+
+  // Ring material (physically correct for Saturn-style textures)
   const ringMaterial = useMemo(() => {
     if (!hasRings) return null
-    
+
     if (ringTextureMap) {
+      ringTextureMap.colorSpace = THREE.SRGBColorSpace
+
       return new THREE.MeshBasicMaterial({
         map: ringTextureMap,
-        transparent: true,
-        opacity: 0.8,
+        alphaMap: ringTextureMap,
+        transparent: false,
         side: THREE.DoubleSide,
+        depthWrite: false,
       })
     }
-    
+
     return new THREE.MeshBasicMaterial({
       color: new THREE.Color(color).offsetHSL(0, -0.2, 0.1),
       transparent: true,
       opacity: 0.6,
       side: THREE.DoubleSide,
+      depthWrite: false,
     })
   }, [hasRings, ringTextureMap, color])
 
   useFrame((state, delta) => {
-    // Update orbital position (ONLY when not paused)
     if (!isPaused) {
       angle.current += orbitSpeed * delta * 60
     }
@@ -101,17 +126,14 @@ export default function CelestialBody({
       groupRef.current.position.set(x, 0, z)
     }
 
-    // Planet rotation (ALWAYS active for realism)
     if (meshRef.current) {
       meshRef.current.rotation.y += rotationSpeed
     }
 
-    // Ring rotation (if applicable)
     if (ringsRef.current) {
       ringsRef.current.rotation.z += 0.0002
     }
 
-    // Hover effect - scale animation
     if (meshRef.current) {
       const targetScale = hovered ? 1.15 : 1
       meshRef.current.scale.lerp(
@@ -142,7 +164,7 @@ export default function CelestialBody({
 
   return (
     <group ref={groupRef} rotation={[0, 0, tilt]}>
-      {/* Planet body */}
+      {/* Planet */}
       <mesh
         ref={meshRef}
         material={material}
@@ -150,42 +172,40 @@ export default function CelestialBody({
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
       >
-        <sphereGeometry args={[radius, 32, 32]} />
+        <sphereGeometry args={[radius, 64, 64]} />
       </mesh>
 
-      {/* Hover glow effect */}
+      {/* Hover glow */}
       {hovered && (
-        <mesh scale={1.3}>
+        <mesh scale={1.4}>
           <sphereGeometry args={[radius, 16, 16]} />
           <meshBasicMaterial
             color={color}
             transparent
-            opacity={0.2}
+            opacity={0.25}
             side={THREE.BackSide}
           />
         </mesh>
       )}
 
-      {/* Saturn's rings */}
-      {hasRings && ringMaterial && (
+      {/* Rings */}
+      {hasRings && ringMaterial && ringGeometry && (
         <mesh
           ref={ringsRef}
-          rotation={[Math.PI / 2.5, 0, 0]}
+          rotation={[Math.PI / 2, 0, 0]} // flat, tilt handled by parent
+          geometry={ringGeometry}
           material={ringMaterial}
-        >
-          <ringGeometry args={[radius * 1.4, radius * 2.2, 64]} />
-        </mesh>
+        />
       )}
 
       {/* Unexplored indicator */}
       {isUnexplored && (
-        <mesh scale={1.1}>
-          <sphereGeometry args={[radius, 16, 16]} />
+        <mesh scale={1.08}>
+          <sphereGeometry args={[radius, 24, 24]} />
           <meshBasicMaterial
             color="#ffffff"
             transparent
-            opacity={0.05}
-            wireframe
+            opacity={0.03}
           />
         </mesh>
       )}

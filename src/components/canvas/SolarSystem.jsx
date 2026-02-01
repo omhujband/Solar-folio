@@ -9,14 +9,13 @@ import CelestialBody from './CelestialBody'
 import OrbitPath from './OrbitPath'
 import { ALL_PLANETS } from '../../data/celestialBodies'
 
-// Camera Controller with Zoom Constraints
+// Camera Controller
 function CameraController() {
   const { camera } = useThree()
   const controlsRef = useRef()
 
   useFrame(() => {
     if (controlsRef.current) {
-      // Ensure camera never enters the sun
       const distanceFromCenter = camera.position.length()
       if (distanceFromCenter < 5) {
         camera.position.normalize().multiplyScalar(5)
@@ -30,14 +29,14 @@ function CameraController() {
       enablePan={true}
       enableZoom={true}
       enableRotate={true}
-      minDistance={5}       // Can't get closer than sun's surface
-      maxDistance={80}      // Can see entire solar system
+      minDistance={5}
+      maxDistance={80}
       maxPolarAngle={Math.PI * 0.85}
       minPolarAngle={Math.PI * 0.15}
       panSpeed={0.5}
       zoomSpeed={0.8}
       rotateSpeed={0.5}
-      target={[0, 0, 0]}    // Always centered on sun
+      target={[0, 0, 0]}
       makeDefault
     />
   )
@@ -58,11 +57,9 @@ function LoadingFallback() {
 function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet, isPaused }) {
   return (
     <>
-      {/* Ambient lighting */}
       <ambientLight intensity={0.15} />
       <hemisphereLight skyColor="#ffffff" groundColor="#444444" intensity={0.3} />
 
-      {/* Star field background */}
       <Stars
         radius={200}
         depth={100}
@@ -73,10 +70,8 @@ function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet, isPaused }) {
         speed={isPaused ? 0 : 0.5}
       />
 
-      {/* The Sun */}
       <Sun onClick={() => onPlanetClick('/home')} />
 
-      {/* Orbit paths */}
       {ALL_PLANETS.map(planet => (
         <OrbitPath
           key={`orbit-${planet.id}`}
@@ -85,7 +80,6 @@ function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet, isPaused }) {
         />
       ))}
 
-      {/* Planets */}
       {ALL_PLANETS.map(planet => (
         <CelestialBody
           key={planet.id}
@@ -100,7 +94,7 @@ function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet, isPaused }) {
   )
 }
 
-// Hover Label Overlay
+// Hover Label
 function HoverLabel({ planet }) {
   if (!planet) return null
 
@@ -180,10 +174,7 @@ export default function SolarSystem({ isPaused }) {
         <CameraController />
       </Canvas>
 
-      {/* Hover label overlay */}
       <HoverLabel planet={hoveredPlanet} />
-      
-      {/* Pause indicator */}
       <PauseIndicator isPaused={isPaused} />
     </div>
   )

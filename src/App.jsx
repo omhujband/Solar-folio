@@ -6,21 +6,19 @@ import SolarSystemView from './components/canvas/SolarSystem'
 import InteractionLegend from './components/ui/InteractionLegend'
 import PauseButton from './components/ui/PauseButton'
 
-// Section Pages
+// Page components
 import HomePage from './pages/HomePage'
 import EducationPage from './pages/EducationPage'
 import ProjectsPage from './pages/ProjectsPage'
 import InternshipsPage from './pages/InternshipsPage'
 import CertificatesPage from './pages/CertificatesPage'
 import ContactPage from './pages/ContactPage'
-
-// Unexplored Pages
 import SaturnPage from './pages/unexplored/SaturnPage'
 import UranusPage from './pages/unexplored/UranusPage'
 import NeptunePage from './pages/unexplored/NeptunePage'
 
 export default function App() {
-  const [appState, setAppState] = useState('disclaimer') // disclaimer | intro | explore
+  const [appState, setAppState] = useState('disclaimer')
   const [isPaused, setIsPaused] = useState(false)
 
   const handleDisclaimerAccept = useCallback(() => {
@@ -38,7 +36,6 @@ export default function App() {
   return (
     <div className="app-container">
       <Routes>
-        {/* Main Solar System View */}
         <Route
           path="/"
           element={
@@ -60,15 +57,13 @@ export default function App() {
           }
         />
 
-        {/* Interactive Section Pages */}
+        {/* Section pages */}
         <Route path="/home" element={<HomePage />} />
         <Route path="/education" element={<EducationPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/internships" element={<InternshipsPage />} />
         <Route path="/certificates" element={<CertificatesPage />} />
         <Route path="/contact" element={<ContactPage />} />
-
-        {/* Unexplored Planets */}
         <Route path="/saturn" element={<SaturnPage />} />
         <Route path="/uranus" element={<UranusPage />} />
         <Route path="/neptune" element={<NeptunePage />} />

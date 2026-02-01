@@ -54,7 +54,7 @@ export default function Sun({ onClick }) {
         <meshBasicMaterial
           color="#ff8c00"
           transparent
-          opacity={0.3}
+          opacity={0.4}
           side={THREE.BackSide}
         />
       </mesh>
@@ -73,7 +73,7 @@ export default function Sun({ onClick }) {
       {/* Point light from sun */}
       <pointLight
         color="#ffd700"
-        intensity={2}
+        intensity={3}
         distance={100}
         decay={2}
       />

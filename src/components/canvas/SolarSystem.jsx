@@ -59,7 +59,8 @@ function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet, isPaused }) {
   return (
     <>
       {/* Ambient lighting */}
-      <ambientLight intensity={0.1} />
+      <ambientLight intensity={0.15} />
+      <hemisphereLight skyColor="#ffffff" groundColor="#444444" intensity={0.3} />
 
       {/* Star field background */}
       <Stars

@@ -50,7 +50,7 @@ export default function CelestialBody({
       roughness: 0.8,
       metalness: 0.1,
       emissive: new THREE.Color(color),
-      emissiveIntensity: isUnexplored ? 0.05 : 0.1,
+      emissiveIntensity: isUnexplored ? 0.05 : 0.15,
     }
 
     if (planetTexture) {

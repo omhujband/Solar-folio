@@ -40,7 +40,7 @@ function RotatingPlanet({ color, radius = 2, hasRings = false, tilt = 0, texture
             roughness={0.7}
             metalness={0.2}
             emissive={color}
-            emissiveIntensity={0.1}
+            emissiveIntensity={0.2}
           />
         )}
       </mesh>
@@ -111,7 +111,7 @@ function RotatingSun() {
       {/* Corona layers */}
       <mesh ref={glowRef} scale={1.15}>
         <sphereGeometry args={[2, 32, 32]} />
-        <meshBasicMaterial color="#ff8c00" transparent opacity={0.3} side={THREE.BackSide} />
+        <meshBasicMaterial color="#ff8c00" transparent opacity={0.35} side={THREE.BackSide} />
       </mesh>
       <mesh scale={1.4}>
         <sphereGeometry args={[2, 32, 32]} />

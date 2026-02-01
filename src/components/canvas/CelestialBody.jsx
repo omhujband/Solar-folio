@@ -20,41 +20,54 @@ export default function CelestialBody({
   onClick,
   onHover,
   isHovered,
+  isPaused = false,
 }) {
   const groupRef = useRef()
   const meshRef = useRef()
   const ringsRef = useRef()
   const [hovered, setHovered] = useState(false)
 
-  // Load textures
-  const planetTexture = texture ? useTexture(texture) : null
-  const ringTextureMap = hasRings && ringTexture ? useTexture(ringTexture) : null
+  // Load textures conditionally
+  const textures = useTexture(
+    texture && ringTexture 
+      ? { map: texture, ringMap: ringTexture }
+      : texture 
+        ? { map: texture }
+        : ringTexture
+          ? { ringMap: ringTexture }
+          : {}
+  )
+
+  const planetTexture = textures.map
+  const ringTextureMap = textures.ringMap
 
   // Calculate initial position
   const angle = useRef(initialAngle)
 
-  // Planet material with texture
+  // Planet material with texture support
   const material = useMemo(() => {
-    if (planetTexture) {
-      return new THREE.MeshStandardMaterial({
-        map: planetTexture,
-        roughness: 0.8,
-        metalness: 0.1,
-        emissive: new THREE.Color(color),
-        emissiveIntensity: isUnexplored ? 0.02 : 0.05,
-      })
-    }
-    // Fallback to colored material if no texture
-    return new THREE.MeshStandardMaterial({
-      color: new THREE.Color(color),
+    const baseConfig = {
       roughness: 0.8,
       metalness: 0.1,
       emissive: new THREE.Color(color),
       emissiveIntensity: isUnexplored ? 0.05 : 0.1,
+    }
+
+    if (planetTexture) {
+      return new THREE.MeshStandardMaterial({
+        ...baseConfig,
+        map: planetTexture,
+        emissiveIntensity: isUnexplored ? 0.02 : 0.05,
+      })
+    }
+
+    return new THREE.MeshStandardMaterial({
+      ...baseConfig,
+      color: new THREE.Color(color),
     })
   }, [planetTexture, color, isUnexplored])
 
-  // Ring material
+  // Ring material (for Saturn)
   const ringMaterial = useMemo(() => {
     if (!hasRings) return null
     
@@ -67,7 +80,6 @@ export default function CelestialBody({
       })
     }
     
-    // Fallback ring color
     return new THREE.MeshBasicMaterial({
       color: new THREE.Color(color).offsetHSL(0, -0.2, 0.1),
       transparent: true,
@@ -77,8 +89,10 @@ export default function CelestialBody({
   }, [hasRings, ringTextureMap, color])
 
   useFrame((state, delta) => {
-    // Update orbital position
-    angle.current += orbitSpeed * delta * 60
+    // Update orbital position (ONLY when not paused)
+    if (!isPaused) {
+      angle.current += orbitSpeed * delta * 60
+    }
 
     const x = Math.cos(angle.current) * orbitRadius
     const z = Math.sin(angle.current) * orbitRadius
@@ -87,7 +101,7 @@ export default function CelestialBody({
       groupRef.current.position.set(x, 0, z)
     }
 
-    // Planet rotation
+    // Planet rotation (ALWAYS active for realism)
     if (meshRef.current) {
       meshRef.current.rotation.y += rotationSpeed
     }
@@ -128,7 +142,7 @@ export default function CelestialBody({
 
   return (
     <group ref={groupRef} rotation={[0, 0, tilt]}>
-      {/* Planet body with texture */}
+      {/* Planet body */}
       <mesh
         ref={meshRef}
         material={material}
@@ -136,7 +150,7 @@ export default function CelestialBody({
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
       >
-        <sphereGeometry args={[radius, 64, 64]} />
+        <sphereGeometry args={[radius, 32, 32]} />
       </mesh>
 
       {/* Hover glow effect */}
@@ -153,7 +167,7 @@ export default function CelestialBody({
       )}
 
       {/* Saturn's rings */}
-      {hasRings && (
+      {hasRings && ringMaterial && (
         <mesh
           ref={ringsRef}
           rotation={[Math.PI / 2.5, 0, 0]}

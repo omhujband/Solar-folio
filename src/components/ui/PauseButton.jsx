@@ -4,17 +4,13 @@ export default function PauseButton({ isPaused, onToggle }) {
   return (
     <button
       onClick={onToggle}
-      className="fixed bottom-6 left-6 z-40 glass-panel rounded-lg p-3 
-                 hover:bg-white/5 transition-all duration-300 group"
+      className="fixed bottom-6 left-6 z-40 glass-panel rounded-lg p-3 hover:bg-white/5 transition-all duration-300 group"
       aria-label={isPaused ? 'Resume orbital motion' : 'Pause orbital motion'}
       title={isPaused ? 'Resume orbits' : 'Pause orbits (easier clicking)'}
     >
       <div className="flex items-center gap-3">
         {/* Icon */}
-        <div className="w-10 h-10 rounded-full border border-solar-gold/50 
-                        flex items-center justify-center
-                        group-hover:border-solar-gold group-hover:bg-solar-gold/10
-                        transition-all duration-300">
+        <div className="w-10 h-10 rounded-full border border-solar-gold/50 flex items-center justify-center group-hover:border-solar-gold group-hover:bg-solar-gold/10 transition-all duration-300">
           {isPaused ? (
             // Play icon
             <svg 

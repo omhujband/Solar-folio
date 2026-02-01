@@ -4,6 +4,7 @@ import DisclaimerModal from './components/ui/DisclaimerModal'
 import EntryAnimation from './components/ui/EntryAnimation'
 import SolarSystemView from './components/canvas/SolarSystem'
 import InteractionLegend from './components/ui/InteractionLegend'
+import PauseButton from './components/ui/PauseButton'
 
 // Section Pages
 import HomePage from './pages/HomePage'
@@ -20,6 +21,7 @@ import NeptunePage from './pages/unexplored/NeptunePage'
 
 export default function App() {
   const [appState, setAppState] = useState('disclaimer') // disclaimer | intro | explore
+  const [isPaused, setIsPaused] = useState(false)
 
   const handleDisclaimerAccept = useCallback(() => {
     setAppState('intro')
@@ -27,6 +29,10 @@ export default function App() {
 
   const handleIntroComplete = useCallback(() => {
     setAppState('explore')
+  }, [])
+
+  const handleTogglePause = useCallback(() => {
+    setIsPaused(prev => !prev)
   }, [])
 
   return (
@@ -45,7 +51,8 @@ export default function App() {
               )}
               {appState === 'explore' && (
                 <>
-                  <SolarSystemView />
+                  <SolarSystemView isPaused={isPaused} />
+                  <PauseButton isPaused={isPaused} onToggle={handleTogglePause} />
                   <InteractionLegend />
                 </>
               )}

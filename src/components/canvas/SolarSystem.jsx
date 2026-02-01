@@ -55,7 +55,7 @@ function LoadingFallback() {
 }
 
 // Main Scene
-function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet }) {
+function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet, isPaused }) {
   return (
     <>
       {/* Ambient lighting */}
@@ -69,7 +69,7 @@ function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet }) {
         factor={4}
         saturation={0}
         fade
-        speed={0.5}
+        speed={isPaused ? 0 : 0.5}
       />
 
       {/* The Sun */}
@@ -92,6 +92,7 @@ function Scene({ onPlanetClick, hoveredPlanet, setHoveredPlanet }) {
           onClick={() => onPlanetClick(planet.path)}
           onHover={(hovered) => setHoveredPlanet(hovered ? planet.id : null)}
           isHovered={hoveredPlanet === planet.id}
+          isPaused={isPaused}
         />
       ))}
     </>
@@ -122,8 +123,24 @@ function HoverLabel({ planet }) {
   )
 }
 
+// Pause Indicator
+function PauseIndicator({ isPaused }) {
+  if (!isPaused) return null
+
+  return (
+    <div className="fixed top-6 right-6 z-40 pointer-events-none">
+      <div className="glass-panel px-4 py-2 rounded-full border border-solar-gold/30">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-solar-gold animate-pulse" />
+          <span className="text-solar-gold text-sm font-medium">Orbits Paused</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Main Export
-export default function SolarSystem() {
+export default function SolarSystem({ isPaused }) {
   const navigate = useNavigate()
   const [hoveredPlanet, setHoveredPlanet] = useState(null)
 
@@ -155,6 +172,7 @@ export default function SolarSystem() {
             onPlanetClick={handlePlanetClick}
             hoveredPlanet={hoveredPlanet}
             setHoveredPlanet={setHoveredPlanet}
+            isPaused={isPaused}
           />
         </Suspense>
 
@@ -163,6 +181,9 @@ export default function SolarSystem() {
 
       {/* Hover label overlay */}
       <HoverLabel planet={hoveredPlanet} />
+      
+      {/* Pause indicator */}
+      <PauseIndicator isPaused={isPaused} />
     </div>
   )
 }

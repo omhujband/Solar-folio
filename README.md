@@ -158,7 +158,7 @@ Open `http://localhost:5173` in your browser.
 ### Production Build
 
 ```bash
-npm run build
+npm run build 
 npm run preview
 ```
 

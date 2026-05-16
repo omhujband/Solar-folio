@@ -1,6 +1,7 @@
 import React from 'react'
 import SectionLayout from '../components/sections/SectionLayout'
 import CertificatesContent from '../components/content/CertificatesContent'
+import { t } from '../utils/texturePath'
 
 export default function CertificatesPage() {
   return (
@@ -9,7 +10,7 @@ export default function CertificatesPage() {
       subtitle="Mars · Achievements Earned"
       planetColor="#cd5c5c"
       planetRadius={1.6}
-      texture="/textures/2k_mars.jpg"
+      texture={t('/textures/2k_mars.jpg')}
     >
       <CertificatesContent />
     </SectionLayout>

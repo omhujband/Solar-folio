@@ -27,7 +27,7 @@ export default function HomeContent() {
           </div>
           <div className="glass-panel p-4 rounded-lg">
             <p className="text-caption text-stardust/60 mb-1">Currently</p>
-            <p className="text-starlight">DeepFake Detection using CNN</p>
+            <p className="text-starlight">Aeronav</p>
           </div>
         </div>
       </section>

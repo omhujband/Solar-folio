@@ -1,6 +1,7 @@
 import React from 'react'
 import SectionLayout from '../components/sections/SectionLayout'
 import ContactContent from '../components/content/ContactContent'
+import { t } from '../utils/texturePath'
 
 export default function ContactPage() {
   return (
@@ -9,7 +10,7 @@ export default function ContactPage() {
       subtitle="Jupiter · Gateway to Connection"
       planetColor="#d4a574"
       planetRadius={2.2}
-      texture="/textures/2k_jupiter.jpg"
+      texture={t('/textures/2k_jupiter.jpg')}
     >
       <ContactContent />
     </SectionLayout>

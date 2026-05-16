@@ -105,7 +105,7 @@ Unexplored planets feature **philosophical messaging** paired with cosmic metaph
 - **Animations:** GSAP  
 - **State Management:** Zustand  
 - **Routing:** React Router v6  
-- **Styling:** Tailwind CSS + Custom CSS  
+- **Styling:** Vanilla CSS (custom design system)  
 - **Build Tool:** Vite  
 - **Language:** JavaScript (ES6+)  
 
@@ -116,7 +116,8 @@ Unexplored planets feature **philosophical messaging** paired with cosmic metaph
 ```
 solar-folio/
 ├── public/
-│   └── textures/          # 2K planet textures
+│   ├── textures/          # 2K planet textures (served at runtime)
+│   └── 404.html           # GitHub Pages SPA routing fallback
 ├── src/
 │   ├── components/
 │   │   ├── canvas/        # 3D components (Sun, Planets, Orbits)
@@ -124,8 +125,10 @@ solar-folio/
 │   │   ├── sections/      # Section layouts
 │   │   └── content/       # Content blocks per section
 │   ├── pages/             # Route-based pages
+│   │   └── unexplored/    # Saturn, Uranus, Neptune pages
 │   ├── data/              # Planet & orbit configuration
-│   └── styles/            # Global styles & Tailwind
+│   ├── utils/             # Shared utilities (e.g. texturePath.js)
+│   └── styles/            # Global CSS design system
 ├── package.json
 ├── vite.config.js
 └── eslint.config.js
@@ -153,14 +156,26 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Open `http://localhost:3000` in your browser.
 
-### Production Build
+### Production Build & Preview
 
 ```bash
-npm run build 
+npm run build
 npm run preview
 ```
+
+### Deploy to GitHub Pages
+
+The project is configured to deploy to `https://omhujband.github.io/Solar-folio/`.
+
+```bash
+npm run deploy
+```
+
+This runs `npm run build` automatically (via the `predeploy` script), then pushes the `dist/` folder to the `gh-pages` branch using the `gh-pages` package.
+
+> **Note:** Make sure `gh-pages` is installed — `npm install --save-dev gh-pages`.
 
 ---
 

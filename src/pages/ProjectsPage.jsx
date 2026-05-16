@@ -1,6 +1,7 @@
 import React from 'react'
 import SectionLayout from '../components/sections/SectionLayout'
 import ProjectsContent from '../components/content/ProjectsContent'
+import { t } from '../utils/texturePath'
 
 export default function ProjectsPage() {
   return (
@@ -9,7 +10,7 @@ export default function ProjectsPage() {
       subtitle="Venus · Radiant Creations"
       planetColor="#e6c87a"
       planetRadius={1.8}
-      texture="/textures/2k_venus_surface.jpg"
+      texture={t('/textures/2k_venus_surface.jpg')}
     >
       <ProjectsContent />
     </SectionLayout>

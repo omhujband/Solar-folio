@@ -1,6 +1,7 @@
 import React from 'react'
 import UnexploredPage from '../../components/sections/UnexploredPage'
 import UnexploredContent from '../../components/content/UnexploredContent'
+import { t } from '../../utils/texturePath'
 
 export default function NeptunePage() {
   return (
@@ -8,7 +9,7 @@ export default function NeptunePage() {
       title="Neptune"
       planetColor="#4b70dd"
       planetRadius={1.7}
-      texture="/textures/2k_neptune.jpg"
+      texture={t('/textures/2k_neptune.jpg')}
     >
       <UnexploredContent uniqueLine="At the edge of the known, where light takes hours to arrive, the deepest truths wait in patient silence — discovered only by those willing to journey far." />
     </UnexploredPage>

@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
+import { t } from '../../utils/texturePath'
 
 export default function Sun({ onClick }) {
   const meshRef = useRef()
@@ -9,7 +10,7 @@ export default function Sun({ onClick }) {
   const coronaRef = useRef()
 
   // Load sun texture
-  const sunTexture = useTexture('/textures/2k_sun.jpg')
+  const sunTexture = useTexture(t('/textures/2k_sun.jpg'))
 
   // Enhanced sun material with texture
   const sunMaterial = useMemo(() => {
